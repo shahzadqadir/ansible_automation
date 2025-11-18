@@ -1,0 +1,29 @@
+
+---
+
+- name: Test connectivity from Site 2 to Site 1
+  hosts: sw_inside
+  connection: network_cli
+  gather_facts: false
+
+  tasks:
+
+    - name: "Task 1 - Test Connectivity to Fortigate Firewall"
+      cisco.ios.ios_command:
+        commands:
+          - show ip route 0.0.0.0
+      register: output
+
+    - name: "Task 2 - Print configured default route"
+      debug: var=output.stdout_lines
+
+    - name: "Task 3 - Test connectivity to remote subnets"
+      cisco.ios.ios_command:
+        commands:
+          - ping 172.16.15.1
+          - ping 172.16.16.1
+          - ping 172.16.17.1
+      register: output
+
+    - name: "Task 4 - Print test results for site 2 to site 1 connectivity"
+      debug: var=output.stdout_lines

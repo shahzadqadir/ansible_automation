@@ -1,0 +1,18 @@
+# ~/automation/ansible_automation/host_vars/csr2/route_maps.j2
+
+---
+routemaps:
+  - name: BACKUP_PERMIT_IN
+    seq: 10
+    acl: allow-all
+    action: permit
+    set:
+      local_pref: 150
+      prepend: ""
+  - name: BACKUP_PERMIT_OUT
+    seq: 10
+    acl: allow-all
+    action: permit
+    set:
+      local_pref: ""
+      prepend: "65534 65534 65534"

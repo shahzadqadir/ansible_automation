@@ -1,0 +1,36 @@
+# ~/automation/ansible_automation/ch9_site1_configs.yml
+---
+
+- name: "Play 1 - Configure Site 1 Switches"
+  hosts: site1_switches
+  gather_facts: false
+  connection: network_cli
+
+  tasks:
+
+    - name: Configure VLANs
+      cisco.ios.ios_config:
+        src: configure_vlans.j2
+
+- name: "Play 2 - Configure Edge Routers"
+  hosts: edge_routers
+  gather_facts: false
+  connection: network_cli
+
+  tasks:
+
+    - name: Configure interfaces
+      cisco.ios.ios_config:
+        src: csrs/interface_configurations.j2  
+
+    - name: Configure Access Control Lists
+      cisco.ios.ios_config:
+        src: csrs/access_list_configuration.j2
+
+    - name: Configure Route Maps
+      cisco.ios.ios_config:
+        src: csrs/route_maps.j2
+
+    - name: Configure Routing Protocols
+      cisco.ios.ios_config:
+        src: csrs/routing_configuration.j2

@@ -1,0 +1,6 @@
+# ~/automation/ansible_automation/group_vars/network.yml
+
+dns: 8.8.8.8
+ntp: 192.168.10.1
+banner: "This device belong to XXX, any unauthorized access is prohibited"
+logging-host: 192.168.10.1
