@@ -1,0 +1,35 @@
+# PLAY 1
+- name: Create Configurations for Cisco Devices
+  hosts: CSR3
+  gather_facts: no
+  tasks:
+    - name: Generate Device Configs
+      template:
+        src: templates/cisco_device_template.j2
+        dest: config_files/CSR3.cfg
+# PLAY 2
+- name: Transfer device configs to TFTP Server
+  hosts: tftpserver
+  gather_facts: no
+  tasks:
+    - name: Copy configs to TFTP Server
+      command: scp config_files/CSR3.cfg script@10.10.99.254:/disk0:/CSR3.cfg
+# PLAY 3
+- name: Configure TFTP/DHCP Servers
+  hosts: tftpserver
+  gather_facts: no
+  tasks:
+    - name: Update DHCP to new config file
+      cisco.ios.ios_config:
+        lines:
+          - network 10.10.99.0 /24
+          - default-router 10.10.99.254
+          - option 150 ip 10.10.99.254
+          - option 67 ascii CSR3.cfg
+        parents: ip dhcp pool MGMT-POOL
+    - name: Update TFTP to config file
+      cisco.ios.ios_config:
+        lines:
+          - tftp-server CSR3.cfg
+          - ip dhcp excluded-address 10.10.99.1 10.10.99.100
+          - ip dhcp excluded-address 10.10.99.201 10.10.99.254

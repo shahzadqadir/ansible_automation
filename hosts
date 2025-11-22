@@ -26,3 +26,5 @@ site2_switches
 [networK:children]
 site1_network
 site2_network
+
+CSR3  ansible_connection=local

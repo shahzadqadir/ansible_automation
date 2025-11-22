@@ -1,0 +1,34 @@
+hostname: CSR3
+users:
+  - username: test
+    password: test123
+    priv: 15
+ip_domain: shahzadqadir.com
+domain_lookup: false
+auth: local
+enable_ssh: true
+interfaces:
+  - name: GigabitEthernet1
+    descr: WAN Interface
+    ip_address: 172.16.102.2
+    mask: 255.255.255.0
+    state: up
+  - name: GigabitEthernet2
+    descr: FREE
+    ip_address: None
+    mask: None
+    state: down
+  - name: GigabitEthernet3
+    descr: FREE
+    ip_address: None
+    mask: None
+    state: down
+routing:
+  bgp:
+    local_as: 65536
+    neighbors:
+      - ip: 172.16.102.1
+        remote_as: 65501
+    networks:
+      - subnet: 172.16.102.0
+        mask: 255.255.255.0
